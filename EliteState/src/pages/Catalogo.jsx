@@ -10,6 +10,7 @@ import { Link } from "react-router-dom"; // Importar Link de react-router-dom
 const Catalogo = () => {
   const [zonas, setZonas] = useState([]);
   const [nuevaZona, setNuevaZona] = useState("");
+  const [search, setSearch] = useState(""); // Estado para la búsqueda
 
   useEffect(() => {
     fetchZonas();
@@ -37,9 +38,33 @@ const Catalogo = () => {
     fetchZonas(); // Recargar zonas con el nuevo conteo de propiedades
   };
 
+  const handleSearch = (e) => {
+    setSearch(e.target.value);
+  };
+
+  const filteredZonas = zonas.filter((zona) =>
+    zona.nombre.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <Layout>
       <h2 className="text-2xl font-bold mb-4">Catálogo de Zonas</h2>
+
+      {/* Barra de búsqueda */}
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Buscar zona por nombre"
+          value={search}
+          onChange={handleSearch}
+          className="border p-2 rounded w-full"
+        />
+        {search && (
+          <p className="text-sm text-gray-500 mt-1">
+            Mostrando {filteredZonas.length} de {zonas.length} zonas
+          </p>
+        )}
+      </div>
 
       <form onSubmit={handleAgregarZona} className="mb-6 flex gap-2">
         <input
@@ -55,7 +80,7 @@ const Catalogo = () => {
       </form>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {zonas.map((zona) => (
+        {filteredZonas.map((zona) => (
           <div key={zona.id} className="p-4 bg-white rounded shadow">
             <h3 className="text-lg font-semibold">
               <Link

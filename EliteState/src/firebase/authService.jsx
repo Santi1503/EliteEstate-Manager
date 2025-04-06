@@ -3,10 +3,22 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
+  setPersistence,
+  browserLocalPersistence,
 } from "firebase/auth";
 import { app } from "./config";
 
 const auth = getAuth(app);
+
+// Configurar persistencia de sesión
+export const setupAuthPersistence = async () => {
+  try {
+    await setPersistence(auth, browserLocalPersistence);
+  } catch (error) {
+    console.error("Error configurando persistencia:", error);
+    throw error;
+  }
+};
 
 // Función para registrar un nuevo usuario
 export const registerUser = async (email, password) => {

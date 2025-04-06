@@ -1,5 +1,5 @@
 import Layout from "../components/Layout";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import {
   getPropiedadesPorZona,
@@ -9,6 +9,7 @@ import { uploadImage } from "../firebase/storageService";
 
 const Zona = () => {
   const { zonaId } = useParams();
+  const navigate = useNavigate();
   const [propiedades, setPropiedades] = useState([]);
   const [nuevaPropiedad, setNuevaPropiedad] = useState({
     ubicacion: "",
@@ -66,22 +67,44 @@ const Zona = () => {
     setSearch(e.target.value);
   };
 
-  const filteredPropiedades = propiedades.filter((propiedad) =>
-    propiedad.ubicacion.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredPropiedades = propiedades.filter((propiedad) => {
+    const searchTerm = search.toLowerCase();
+    return (
+      propiedad.ubicacion.toLowerCase().includes(searchTerm) ||
+      propiedad.descripcion.toLowerCase().includes(searchTerm) ||
+      propiedad.tipo.toLowerCase().includes(searchTerm) ||
+      propiedad.estado.toLowerCase().includes(searchTerm) ||
+      propiedad.propietario.toLowerCase().includes(searchTerm)
+    );
+  });
 
   return (
     <Layout>
-      <h2 className="text-2xl font-bold mb-4">Propiedades en esta zona</h2>
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-2xl font-bold">Propiedades en esta zona</h2>
+        <button
+          onClick={() => navigate('/catalogo')}
+          className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 flex items-center"
+        >
+          <span className="mr-1">←</span> Volver a Zonas
+        </button>
+      </div>
 
       {/* Barra de búsqueda */}
-      <input
-        type="text"
-        placeholder="Buscar propiedad por ubicación"
-        value={search}
-        onChange={handleSearch}
-        className="border p-2 rounded w-full mb-4"
-      />
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Buscar propiedad por ubicación, descripción, tipo, estado o propietario"
+          value={search}
+          onChange={handleSearch}
+          className="border p-2 rounded w-full"
+        />
+        {search && (
+          <p className="text-sm text-gray-500 mt-1">
+            Mostrando {filteredPropiedades.length} de {propiedades.length} propiedades
+          </p>
+        )}
+      </div>
 
       {/* Botón para agregar propiedad */}
       <button
@@ -267,7 +290,7 @@ const Zona = () => {
             </p>
 
             <button
-              onClick={() => setShowModal(true)} // Mostrar el modal para detalles de propiedad si lo necesitas
+              onClick={() => navigate(`/zona/${zonaId}/propiedad/${propiedad.id}`)}
               className="text-blue-500 hover:underline mt-2 inline-block"
             >
               Ver detalles

@@ -19,7 +19,7 @@ const Dashboard = () => {
 
   return (
     <Layout>
-      <h2 className="text-2xl font-bold mb-4">Bienvenida,</h2>
+      <h2 className="text-2xl font-bold mb-4">Bienvenid@, {user?.nombre} {user?.apellido}</h2>
       <p className="text-gray-700 mb-6">
         Aquí verás tus próximas citas y actividades.
       </p>

@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { loginUser } from "../firebase/authService";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -53,6 +53,15 @@ const Login = () => {
           Iniciar sesión
         </button>
       </form>
+      
+      <div className="mt-4 text-center">
+        <p className="text-gray-600">
+          ¿No tienes cuenta?{" "}
+          <Link to="/register" className="text-blue-500 hover:underline">
+            Regístrate
+          </Link>
+        </p>
+      </div>
     </div>
   );
 };
