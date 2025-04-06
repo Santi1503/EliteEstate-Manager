@@ -202,3 +202,22 @@ export const updatePropiedad = async (zonaId, propiedadId, propiedadData) => {
   await updateDoc(propiedadRef, propiedadData);
 };
 
+// Obtener una zona específica por ID
+export const getZonaById = async (zonaId) => {
+  const userId = getCurrentUserId();
+  if (!userId) throw new Error("Usuario no autenticado");
+  
+  const zonaRef = doc(db, "zonas", zonaId);
+  const zonaDoc = await getDoc(zonaRef);
+  
+  if (!zonaDoc.exists()) {
+    throw new Error("Zona no encontrada");
+  }
+  
+  if (zonaDoc.data().userId !== userId) {
+    throw new Error("No tienes permiso para ver esta zona");
+  }
+  
+  return { id: zonaDoc.id, ...zonaDoc.data() };
+};
+

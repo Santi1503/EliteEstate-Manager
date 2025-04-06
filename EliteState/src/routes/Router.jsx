@@ -8,6 +8,8 @@ import PrivateRoute from "./PrivateRoute";
 import Zona from "../pages/Zonas";
 import DetallePropiedad from "../components/DetallePropiedad";
 import Register from "../pages/Register";
+import RecuperarContrasena from "../pages/RecuperarContrasena";
+import Estadisticas from "../pages/Estadisticas";
 
 const Router = () => {
   return (
@@ -15,6 +17,7 @@ const Router = () => {
       <Route path="/" element={<Login />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/recuperar-contrasena" element={<RecuperarContrasena />} />
       <Route
         path="/dashboard"
         element={
@@ -44,6 +47,14 @@ const Router = () => {
         element={
           <PrivateRoute>
             <Perfil />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/estadisticas"
+        element={
+          <PrivateRoute>
+            <Estadisticas />
           </PrivateRoute>
         }
       />

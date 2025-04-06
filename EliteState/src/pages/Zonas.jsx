@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import {
   getPropiedadesPorZona,
   createPropiedad,
+  getZonaById,
 } from "../firebase/zonasService";
 import { uploadImage } from "../firebase/storageService";
 
@@ -11,6 +12,8 @@ const Zona = () => {
   const { zonaId } = useParams();
   const navigate = useNavigate();
   const [propiedades, setPropiedades] = useState([]);
+  const [zona, setZona] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [nuevaPropiedad, setNuevaPropiedad] = useState({
     ubicacion: "",
     descripcion: "",
@@ -27,12 +30,23 @@ const Zona = () => {
   const [search, setSearch] = useState(""); // Estado para la búsqueda
 
   useEffect(() => {
-    const fetchPropiedades = async () => {
-      const data = await getPropiedadesPorZona(zonaId);
-      setPropiedades(data);
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        const [zonaData, propiedadesData] = await Promise.all([
+          getZonaById(zonaId),
+          getPropiedadesPorZona(zonaId)
+        ]);
+        setZona(zonaData);
+        setPropiedades(propiedadesData);
+      } catch (error) {
+        console.error("Error al cargar los datos:", error);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
-    fetchPropiedades();
+    fetchData();
   }, [zonaId]);
 
   const handleImageUpload = async (e) => {
@@ -78,10 +92,20 @@ const Zona = () => {
     );
   });
 
+  if (isLoading) {
+    return (
+      <Layout>
+        <div className="flex items-center justify-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+        </div>
+      </Layout>
+    );
+  }
+
   return (
     <Layout>
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold">Propiedades en esta zona</h2>
+        <h2 className="text-2xl font-bold">Propiedades en {zona?.nombre}</h2>
         <button
           onClick={() => navigate('/catalogo')}
           className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 flex items-center"

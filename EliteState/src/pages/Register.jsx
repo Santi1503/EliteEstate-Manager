@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { getAuth } from "firebase/auth";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -11,8 +12,17 @@ const Register = () => {
     confirmPassword: ""
   });
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const navigate = useNavigate();
-  const { register } = useAuth();
+  const { handleRegister } = useAuth();
+
+  useEffect(() => {
+    // Verificar si ya hay un usuario autenticado
+    const auth = getAuth();
+    if (auth.currentUser) {
+      navigate("/dashboard");
+    }
+  }, [navigate]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -21,6 +31,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setSuccess("");
 
     // Validar que las contraseñas coincidan
     if (formData.password !== formData.confirmPassword) {
@@ -29,8 +40,9 @@ const Register = () => {
     }
 
     try {
-      await register(formData.email, formData.password, formData.nombre, formData.apellido);
-      navigate("/dashboard");
+      await handleRegister(formData.email, formData.password, formData.nombre, formData.apellido);
+      setSuccess("Registro exitoso. Por favor, verifica tu correo electrónico para poder cambiar tu contraseña en el futuro.");
+      // No redirigimos automáticamente para que el usuario pueda ver el mensaje
     } catch (error) {
       setError(error.message);
     }
@@ -55,7 +67,7 @@ const Register = () => {
                 name="nombre"
                 type="text"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
                 placeholder="Nombre"
                 value={formData.nombre}
                 onChange={handleChange}
@@ -70,7 +82,7 @@ const Register = () => {
                 name="apellido"
                 type="text"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
                 placeholder="Apellido"
                 value={formData.apellido}
                 onChange={handleChange}
@@ -84,8 +96,9 @@ const Register = () => {
                 id="email"
                 name="email"
                 type="email"
+                autoComplete="email"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
                 placeholder="Correo electrónico"
                 value={formData.email}
                 onChange={handleChange}
@@ -99,8 +112,9 @@ const Register = () => {
                 id="password"
                 name="password"
                 type="password"
+                autoComplete="new-password"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
                 placeholder="Contraseña"
                 value={formData.password}
                 onChange={handleChange}
@@ -108,15 +122,16 @@ const Register = () => {
             </div>
             <div>
               <label htmlFor="confirmPassword" className="sr-only">
-                Confirmar contraseña
+                Confirmar Contraseña
               </label>
               <input
                 id="confirmPassword"
                 name="confirmPassword"
                 type="password"
+                autoComplete="new-password"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Confirmar contraseña"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                placeholder="Confirmar Contraseña"
                 value={formData.confirmPassword}
                 onChange={handleChange}
               />
@@ -127,21 +142,26 @@ const Register = () => {
             <div className="text-red-500 text-sm text-center">{error}</div>
           )}
 
+          {success && (
+            <div className="text-green-500 text-sm text-center">{success}</div>
+          )}
+
           <div>
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
               Registrarse
             </button>
           </div>
         </form>
+
         <div className="text-center">
           <p className="text-sm text-gray-600">
-            ¿Ya tienes cuenta?{" "}
+            ¿Ya tienes una cuenta?{" "}
             <Link
               to="/login"
-              className="font-medium text-indigo-600 hover:text-indigo-500"
+              className="font-medium text-blue-600 hover:text-blue-500"
             >
               Inicia sesión
             </Link>
