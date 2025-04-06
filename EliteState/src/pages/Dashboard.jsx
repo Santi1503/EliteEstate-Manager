@@ -200,7 +200,7 @@ const Dashboard = () => {
                     <p className="text-sm text-gray-600">{zona.propiedadesCount || 0} propiedades</p>
                   </div>
                   <Link
-                    to={`/zonas/${zona.id}`}
+                    to={`/zona/${zona.id}`}
                     className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
                   >
                     Ver Zona
