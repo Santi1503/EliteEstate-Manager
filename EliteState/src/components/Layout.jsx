@@ -22,7 +22,7 @@ const Layout = ({ children }) => {
       const auth = getAuth();
       await signOut(auth);
       // Forzar recarga de la página para redirigir al login
-      window.location.href = "/login";
+      window.location.href = "/";
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
     }
