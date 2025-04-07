@@ -41,7 +41,7 @@ const Login = () => {
 
     try {
       await handleLogin(formData.email, formData.password);
-      navigate("/dashboard");
+      navigate("/");
     } catch (error) {
       setError(error.message);
     } finally {
