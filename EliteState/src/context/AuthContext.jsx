@@ -75,6 +75,7 @@ export const AuthProvider = ({ children }) => {
       await setPersistence(auth, browserLocalPersistence);
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       return userCredential;
+      window.location.href = "/";
     } catch (error) {
       throw error;
     }
