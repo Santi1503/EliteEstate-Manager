@@ -18,7 +18,7 @@ const Login = () => {
     // Verificar si ya hay un usuario autenticado
     const auth = getAuth();
     if (auth.currentUser) {
-      navigate("/dashboard");
+      navigate("/");
     }
   }, [navigate]);
 
