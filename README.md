@@ -2,7 +2,7 @@
 
 EliteState Manager es una aplicación web progresiva (PWA) diseñada para profesionales inmobiliarios que necesitan gestionar propiedades, citas y zonas de manera eficiente. Con una interfaz moderna y responsive, la aplicación permite mantener un control detallado de tu cartera inmobiliaria y agenda de actividades.
 
-![EliteState Manager](./public/icon.png)
+![EliteState Manager](/EliteState/public/icon.png)
 
 ## ✨ Características
 
@@ -10,14 +10,10 @@ EliteState Manager es una aplicación web progresiva (PWA) diseñada para profes
 - Catálogo completo de propiedades
 - Detalles específicos de cada propiedad
 - Estado de disponibilidad (venta/renta)
-- Registro de visitas y actividades
-- Galería de imágenes por propiedad
 
 ### 📍 Gestión de Zonas
 - Organización de propiedades por zonas
 - Estadísticas por zona
-- Visualización de propiedades en cada zona
-- Métricas de rendimiento por zona
 
 ### 📅 Agenda y Calendario
 - Calendario interactivo
@@ -31,13 +27,6 @@ EliteState Manager es una aplicación web progresiva (PWA) diseñada para profes
 - Métricas clave de negocio
 - Gráficos de rendimiento
 - Análisis de propiedades por zona
-- Seguimiento de actividades
-
-### 👤 Gestión de Perfil
-- Perfil de usuario personalizable
-- Configuración de notificaciones
-- Preferencias de visualización
-- Gestión de cuenta
 
 ## 🛠️ Tecnologías Utilizadas
 
@@ -59,23 +48,46 @@ EliteState/
 ├── public/
 │   ├── icon.png
 │   ├── manifest.json
+│   ├── index.html
+│   ├── service-worker.js
 │   └── sw.js
 ├── src/
 │   ├── components/
+│   │   ├── DetallePropiedad.jsx
 │   │   ├── Layout.jsx
-│   │   └── [otros componentes]
+│   │   ├── PropiedadModal.jsx
+│   │   └── Sidebar.jsx
 │   ├── pages/
-│   │   ├── Dashboard.jsx
 │   │   ├── Agenda.jsx
-│   │   └── [otras páginas]
+│   │   ├── Catalogo.jsx
+│   │   ├── Dashboard.jsx
+│   │   ├── Estadisticas.jsx
+│   │   ├── Login.jsx
+│   │   ├── Perfil.jsx
+│   │   ├── RecuperarContrasena.jsx
+│   │   ├── Register.jsx
+│   │   └── Zonas.jsx
 │   ├── context/
 │   │   └── AuthContext.jsx
 │   ├── firebase/
+│   │   ├── authService.jsx
 │   │   ├── config.js
-│   │   └── [servicios]
+│   │   ├── notificationsService.js
+│   │   ├── storageService.js
+│   │   └── zonasService.js
+│   ├── routes/
+│   │   ├── PrivateRoute.jsx
+│   │   └── Router.jsx
 │   ├── App.jsx
+│   ├── index.css
 │   └── main.jsx
-└── [archivos de configuración]
+├── .env
+├── .gitignore
+├── index.html
+├── postcss.config.mjs
+├── tailwind.config.js
+├── vite.config.js
+└── README.md
 ```
 
 ## 🚀 Instalación y Uso Local
