@@ -86,7 +86,7 @@ export const AuthProvider = ({ children }) => {
       await signOut(auth);
       setUser(null);
       // Usar window.location para redirigir después de cerrar sesión
-      window.location.href = "/login";
+      window.location.href = "/";
     } catch (error) {
       throw error;
     }
