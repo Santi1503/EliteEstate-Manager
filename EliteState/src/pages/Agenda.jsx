@@ -408,26 +408,26 @@ const Agenda = () => {
 
   return (
     <Layout>
-      <div className="space-y-6">
-        <div className="flex justify-between items-center">
+      <div className="space-y-4 md:space-y-6 px-2 md:px-4">
+        <div className="flex flex-col md:flex-row md:justify-between md:items-center space-y-2 md:space-y-0">
           <div>
-            <h2 className="text-2xl font-bold mb-2">Agenda</h2>
-            <p className="text-gray-700">
+            <h2 className="text-lg md:text-2xl font-bold mb-1 md:mb-2">Agenda</h2>
+            <p className="text-xs md:text-base text-gray-700">
               Gestiona tus citas, reuniones y actividades.
             </p>
           </div>
-          <div className="flex space-x-2">
+          <div className="flex flex-wrap gap-2">
             {notificationPermission !== "granted" && (
               <button
                 onClick={checkNotificationPermission}
-                className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+                className="px-3 py-1.5 md:px-4 md:py-2 bg-yellow-500 text-white text-xs md:text-base rounded hover:bg-yellow-600"
               >
                 Activar Notificaciones
               </button>
             )}
             <button
               onClick={goToCurrentTime}
-              className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+              className="px-3 py-1.5 md:px-4 md:py-2 bg-green-700 text-white text-xs md:text-base rounded hover:bg-green-600"
             >
               Ir a Hora Actual
             </button>
@@ -436,14 +436,14 @@ const Agenda = () => {
                 resetEventForm();
                 setShowEventForm(true);
               }}
-              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              className="px-3 py-1.5 md:px-4 md:py-2 bg-blue-500 text-white text-xs md:text-base rounded hover:bg-blue-600"
             >
               Agregar Evento
             </button>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow">
+        <div className="bg-white p-2 md:p-6 rounded-lg shadow overflow-x-auto">
           <FullCalendar
             ref={calendarRef}
             plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -470,25 +470,39 @@ const Agenda = () => {
             height="auto"
             expandRows={true}
             stickyHeaderDates={true}
-            dayHeaderFormat={{ weekday: 'long' }}
+            dayHeaderFormat={{ weekday: 'short' }}
             slotLabelFormat={{
               hour: '2-digit',
               minute: '2-digit',
               hour12: false
+            }}
+            buttonText={{
+              today: 'Hoy',
+              month: 'Mes',
+              week: 'Semana',
+              day: 'Día'
+            }}
+            views={{
+              timeGridWeek: {
+                titleFormat: { year: 'numeric', month: 'short', day: 'numeric' }
+              },
+              timeGridDay: {
+                titleFormat: { year: 'numeric', month: 'short', day: 'numeric' }
+              }
             }}
           />
         </div>
 
         {/* Modal de formulario de evento */}
         {showEventForm && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-lg p-6 max-w-md w-full">
-              <h3 className="text-xl font-bold mb-4">
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-2 md:p-4 z-50">
+            <div className="bg-white rounded-lg p-3 md:p-6 max-w-md w-full max-h-[90vh] overflow-y-auto">
+              <h3 className="text-lg md:text-xl font-bold mb-3 md:mb-4">
                 {isEditing ? "Editar Evento" : (selectedDate ? "Nuevo Evento" : "Agregar Evento")}
               </h3>
-              <form onSubmit={handleEventSubmit} className="space-y-4">
+              <form onSubmit={handleEventSubmit} className="space-y-3 md:space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-xs md:text-sm font-medium text-gray-700">
                     Título
                   </label>
                   <input
@@ -496,38 +510,38 @@ const Agenda = () => {
                     required
                     value={eventForm.title}
                     onChange={(e) => setEventForm(prev => ({ ...prev, title: e.target.value }))}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-xs md:text-base"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-xs md:text-sm font-medium text-gray-700">
                     Descripción
                   </label>
                   <textarea
                     value={eventForm.description}
                     onChange={(e) => setEventForm(prev => ({ ...prev, description: e.target.value }))}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-xs md:text-base"
                     rows="3"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-xs md:text-sm font-medium text-gray-700">
                     Personas que acompañarán
                   </label>
                   <input
                     type="text"
                     value={eventForm.attendees}
                     onChange={(e) => setEventForm(prev => ({ ...prev, attendees: e.target.value }))}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-xs md:text-base"
                     placeholder="Separar nombres con comas"
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-xs md:text-sm font-medium text-gray-700">
                       Fecha y hora de inicio
                     </label>
                     <input
@@ -535,12 +549,12 @@ const Agenda = () => {
                       required
                       value={eventForm.start}
                       onChange={handleStartDateChange}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-xs md:text-base"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-xs md:text-sm font-medium text-gray-700">
                       Fecha y hora de fin
                     </label>
                     <input
@@ -549,16 +563,16 @@ const Agenda = () => {
                       value={eventForm.end}
                       min={eventForm.start}
                       onChange={(e) => setEventForm(prev => ({ ...prev, end: e.target.value }))}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-xs md:text-base"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs md:text-sm font-medium text-gray-700 mb-2">
                     Recordatorios
                   </label>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                     {REMINDER_OPTIONS.map(option => (
                       <label key={option.value} className="flex items-center space-x-2">
                         <input
@@ -567,26 +581,26 @@ const Agenda = () => {
                           onChange={() => handleReminderToggle(option.value)}
                           className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                         />
-                        <span className="text-sm text-gray-700">{option.label}</span>
+                        <span className="text-xs md:text-sm text-gray-700">{option.label}</span>
                       </label>
                     ))}
                   </div>
                 </div>
 
-                <div className="flex justify-end space-x-3 mt-6">
+                <div className="flex justify-end space-x-2 md:space-x-3 mt-4 md:mt-6">
                   <button
                     type="button"
                     onClick={() => {
                       resetEventForm();
                       setShowEventForm(false);
                     }}
-                    className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                    className="px-3 py-1.5 md:px-4 md:py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 text-xs md:text-base"
                   >
                     Cancelar
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                    className="px-3 py-1.5 md:px-4 md:py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 text-xs md:text-base"
                   >
                     {isEditing ? "Actualizar" : "Guardar"}
                   </button>
@@ -598,48 +612,48 @@ const Agenda = () => {
 
         {/* Modal de detalles del evento */}
         {showEventDetails && selectedEvent && (
-          <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center p-4 z-50">
-            <div className="bg-white bg-opacity-90 backdrop-blur-sm rounded-lg p-6 max-w-md w-full shadow-lg border border-gray-200">
-              <h3 className="text-xl font-bold mb-4">{selectedEvent.title}</h3>
+          <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center p-2 md:p-4 z-50">
+            <div className="bg-white bg-opacity-90 backdrop-blur-sm rounded-lg p-3 md:p-6 max-w-md w-full shadow-lg border border-gray-200">
+              <h3 className="text-lg md:text-xl font-bold mb-3 md:mb-4">{selectedEvent.title}</h3>
               
-              <div className="space-y-4">
+              <div className="space-y-3 md:space-y-4">
                 <div>
-                  <h4 className="text-sm font-medium text-gray-500">Fecha y hora</h4>
-                  <p className="mt-1">
+                  <h4 className="text-xs md:text-sm font-medium text-gray-500">Fecha y hora</h4>
+                  <p className="mt-1 text-xs md:text-base">
                     {formatEventTime(selectedEvent.start)} - {formatEventTime(selectedEvent.end)}
                   </p>
                 </div>
                 
                 {selectedEvent.extendedProps.description && (
                   <div>
-                    <h4 className="text-sm font-medium text-gray-500">Descripción</h4>
-                    <p className="mt-1">{selectedEvent.extendedProps.description}</p>
+                    <h4 className="text-xs md:text-sm font-medium text-gray-500">Descripción</h4>
+                    <p className="mt-1 text-xs md:text-base">{selectedEvent.extendedProps.description}</p>
                   </div>
                 )}
                 
                 {selectedEvent.extendedProps.attendees && (
                   <div>
-                    <h4 className="text-sm font-medium text-gray-500">Personas que acompañarán</h4>
-                    <p className="mt-1">{selectedEvent.extendedProps.attendees}</p>
+                    <h4 className="text-xs md:text-sm font-medium text-gray-500">Personas que acompañarán</h4>
+                    <p className="mt-1 text-xs md:text-base">{selectedEvent.extendedProps.attendees}</p>
                   </div>
                 )}
                 
                 <div>
-                  <h4 className="text-sm font-medium text-gray-500">Recordatorios</h4>
-                  <p className="mt-1">{getReminderLabels(selectedEvent.extendedProps.reminders)}</p>
+                  <h4 className="text-xs md:text-sm font-medium text-gray-500">Recordatorios</h4>
+                  <p className="mt-1 text-xs md:text-base">{getReminderLabels(selectedEvent.extendedProps.reminders)}</p>
                 </div>
               </div>
               
-              <div className="flex justify-end space-x-3 mt-6">
+              <div className="flex justify-end space-x-2 md:space-x-3 mt-4 md:mt-6">
                 <button
                   onClick={() => setShowEventDetails(false)}
-                  className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                  className="px-3 py-1.5 md:px-4 md:py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 text-xs md:text-base"
                 >
                   Cerrar
                 </button>
                 <button
                   onClick={handleEditEvent}
-                  className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                  className="px-3 py-1.5 md:px-4 md:py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 text-xs md:text-base"
                 >
                   Editar
                 </button>
@@ -649,7 +663,7 @@ const Agenda = () => {
                       handleEventDelete(selectedEvent.id);
                     }
                   }}
-                  className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+                  className="px-3 py-1.5 md:px-4 md:py-2 bg-red-500 text-white rounded-md hover:bg-red-600 text-xs md:text-base"
                 >
                   Eliminar
                 </button>

@@ -24,105 +24,206 @@ body {
 }
 
 .btn-primary {
-  @apply bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200;
+  @apply: bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200;
 }
 
 .btn-secondary {
-  @apply bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200;
+  @apply: bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200;
 }
 
 .btn-outline {
-  @apply border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium py-2 px-4 rounded-md transition-colors duration-200;
+  @apply: border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium py-2 px-4 rounded-md transition-colors duration-200;
 }
 
 .card {
-  @apply bg-white rounded-lg shadow-md p-6;
+  @apply: bg-white rounded-lg shadow-md p-6;
 }
 
 .input-field {
-  @apply appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm;
+  @apply: appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm;
 }
 
 .form-label {
-  @apply block text-sm font-medium text-gray-700 mb-1;
+  @apply: block text-sm font-medium text-gray-700 mb-1;
 }
 
 .section-title {
-  @apply text-2xl font-bold text-gray-900 mb-4;
+  @apply: text-2xl font-bold text-gray-900 mb-4;
 }
 
 .section-subtitle {
-  @apply text-lg font-medium text-gray-700 mb-2;
+  @apply: text-lg font-medium text-gray-700 mb-2;
 }
 
 /* Estilos para el calendario */
 .fc {
-  @apply bg-white rounded-lg shadow-md p-4;
+  @apply: bg-white rounded-lg shadow-md p-0.5 md:p-4;
 }
 
 .fc-toolbar-title {
-  @apply text-xl font-bold text-gray-800;
+  @apply: text-[8px] md:text-xl font-bold text-gray-800;
 }
 
 .fc-button-primary {
-  @apply bg-blue-600 border-blue-600 hover:bg-blue-700 !important;
+  @apply: bg-blue-600 border-blue-600 hover:bg-blue-700 text-[px] md:text-sm !important;
+  min-height: 20px !important;
+  line-height: 1 !important;
+}
+
+.fc-button {
+  @apply: text-[8px] md:text-base px-0.5 md:px-4 py-0.5 md:py-2 !important;
+  min-height: 20px !important;
+  line-height: 1 !important;
 }
 
 .fc-day-today {
-  @apply bg-blue-50 !important;
+  @apply: bg-blue-50 !important;
 }
 
 .fc-event {
-  @apply bg-blue-600 border-blue-600 cursor-pointer !important;
+  @apply: bg-blue-600 border-blue-600 cursor-pointer text-xs md:text-sm !important;
 }
 
-/* Estilos para tablas */
-.table-container {
-  @apply overflow-x-auto rounded-lg shadow-md;
+.fc-event-title {
+  @apply: text-xs md:text-sm !important;
 }
 
-.table {
-  @apply min-w-full divide-y divide-gray-200;
+.fc-timegrid-slot-label {
+  @apply: text-xs md:text-sm !important;
 }
 
-.table th {
-  @apply px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider;
+.fc-col-header-cell {
+  @apply: text-xs md:text-sm !important;
 }
 
-.table td {
-  @apply px-6 py-4 whitespace-nowrap text-sm text-gray-500;
+.fc-timegrid-axis {
+  @apply: text-xs md:text-sm !important;
 }
 
-.table tr {
-  @apply bg-white hover:bg-gray-50;
+.fc-timegrid-slot {
+  @apply: h-8 md:h-12 !important;
 }
 
-.table tr:nth-child(even) {
-  @apply bg-gray-50;
+.fc-timegrid-axis-cushion {
+  @apply: text-xs md:text-sm !important;
 }
 
-/* Estilos para modales */
+.fc-timegrid-slot-lane {
+  @apply: min-h-[2rem] md:min-h-[3rem] !important;
+}
+
+.fc-timegrid-now-indicator-line {
+  @apply: border-red-500 !important;
+}
+
+.fc-timegrid-now-indicator-arrow {
+  @apply: border-red-500 !important;
+}
+
+.fc-daygrid-day-number {
+  @apply: text-xs md:text-sm !important;
+}
+
+.fc-daygrid-more-link {
+  @apply: text-xs md:text-sm !important;
+}
+
+.fc-daygrid-event {
+  @apply: text-xs md:text-sm !important;
+}
+
+.fc-daygrid-day-events {
+  @apply: mt-1 !important;
+}
+
+.fc-scrollgrid {
+  @apply: border-gray-200 !important;
+}
+
+.fc-scrollgrid-section-header {
+  @apply: border-gray-200 !important;
+}
+
+.fc-scrollgrid-section-body {
+  @apply: border-gray-200 !important;
+}
+
+.fc-theme-standard td, .fc-theme-standard th {
+  @apply: border-gray-200 !important;
+}
+
+.fc-toolbar {
+  @apply: flex flex-row flex-wrap md:flex-row gap-0.5 md:gap-4 !important;
+  min-height: 24px !important;
+}
+
+.fc-toolbar-chunk {
+  @apply: flex flex-wrap gap-0.5 md:gap-2 items-center !important;
+  min-height: 20px !important;
+}
+
+.fc-prev-button, .fc-next-button, .fc-today-button {
+  @apply: px-0.5 md:px-4 py-0.5 md:py-2 text-[8px] md:text-base !important;
+  min-height: 20px !important;
+  line-height: 1 !important;
+}
+
+.fc-button-group {
+  @apply: flex items-center !important;
+  min-height: 20px !important;
+}
+
+.fc-view-harness {
+  @apply: min-h-[350px] md:min-h-[600px] mt-1 !important;
+}
+
+/* Estilos para modales y formularios */
 .modal-backdrop {
-  @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50;
+  @apply: fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-2 md:p-4 z-50;
 }
 
 .modal-content {
-  @apply bg-white rounded-lg p-6 max-w-md w-full shadow-lg;
+  @apply: bg-white rounded-lg p-3 md:p-6 max-w-md w-full shadow-lg max-h-[90vh] overflow-y-auto;
 }
 
 /* Estilos para notificaciones */
 .toast-success {
-  @apply bg-green-500 text-white;
+  @apply: bg-green-500 text-white text-xs md:text-sm;
 }
 
 .toast-error {
-  @apply bg-red-500 text-white;
+  @apply: bg-red-500 text-white text-xs md:text-sm;
 }
 
 .toast-warning {
-  @apply bg-yellow-500 text-white;
+  @apply: bg-yellow-500 text-white text-xs md:text-sm;
 }
 
 .toast-info {
-  @apply bg-blue-500 text-white;
+  @apply: bg-blue-500 text-white text-xs md:text-sm;
+}
+
+/* Estilos para tablas */
+.table-container {
+  @apply: overflow-x-auto rounded-lg shadow-md;
+}
+
+.table {
+  @apply: min-w-full divide-y divide-gray-200;
+}
+
+.table th {
+  @apply: px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider;
+}
+
+.table td {
+  @apply: px-6 py-4 whitespace-nowrap text-sm text-gray-500;
+}
+
+.table tr {
+  @apply: bg-white hover:bg-gray-50;
+}
+
+.table tr:nth-child(even) {
+  @apply: bg-gray-50;
 }

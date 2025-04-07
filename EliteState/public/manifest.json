@@ -1,29 +1,26 @@
 {
-  "short_name": "EliteEstate",
-  "name": "EliteEstate - Gestión de propiedades y citas",
+  "name": "EliteState Manager",
+  "short_name": "EliteState",
+  "description": "Gestión de propiedades inmobiliarias",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "src": "/icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
-      "src": "logo192.png",
+      "src": "/icon.png",
+      "sizes": "512x512",
       "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "logo512.png",
-      "type": "image/png",
-      "sizes": "512x512"
+      "purpose": "any maskable"
     }
   ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff",
   "orientation": "portrait",
-  "description": "Aplicación para la gestión de propiedades inmobiliarias y citas",
   "dir": "ltr",
   "lang": "es",
   "prefer_related_applications": false,

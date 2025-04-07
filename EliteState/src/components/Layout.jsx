@@ -1,7 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
 import { getAuth, signOut } from "firebase/auth";
+import { useState } from "react";
 
 const navItems = [
   { path: "/dashboard", label: "Dashboard", icon: "M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" },
@@ -14,6 +15,7 @@ const navItems = [
 const Layout = ({ children }) => {
   const location = useLocation();
   const { user } = useAuth();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -26,74 +28,188 @@ const Layout = ({ children }) => {
     }
   };
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   return (
     <div className="flex h-screen bg-gray-50">
-      <aside className="w-64 bg-white shadow-md hidden md:block flex flex-col">
-        <div className="p-6 border-b border-gray-200">
-          <h1 className="text-2xl font-bold text-blue-600">EliteEstate</h1>
-          <p className="text-sm text-gray-500 mt-1">Gestión Inmobiliaria</p>
-        </div>
-        
-        <nav className="flex flex-col gap-1 p-4 flex-grow">
-          {navItems.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 ${
-                location.pathname === item.path
-                  ? "bg-blue-50 text-blue-600 font-medium"
-                  : "text-gray-700 hover:bg-gray-100"
-              }`}
+      {/* Mobile Menu Button - Bottom Left */}
+      <button
+        onClick={toggleMobileMenu}
+        className="md:hidden fixed bottom-4 left-4 z-50 p-2 rounded-lg bg-white border border-gray-400 shadow-md"
+      >
+        <svg
+          className="w-6 h-6 text-blue-600"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d={isMobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
+          />
+        </svg>
+      </button>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+            onClick={toggleMobileMenu}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Sidebar - Fixed on mobile, static on desktop */}
+      <div className="hidden md:block w-64 flex-shrink-0">
+        <aside className="h-full bg-white shadow-md">
+          <div className="p-4 md:p-6 border-b border-gray-200">
+            <h1 className="text-xl md:text-2xl font-bold text-blue-600">EliteEstate</h1>
+            <p className="text-xs md:text-sm text-gray-500 mt-1">Gestión Inmobiliaria</p>
+          </div>
+          
+          <nav className="flex flex-col gap-1 p-4 flex-grow">
+            {navItems.map((item) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 ${
+                  location.pathname === item.path
+                    ? "bg-blue-50 text-blue-600 font-medium"
+                    : "text-gray-700 hover:bg-gray-100"
+                }`}
+              >
+                <svg 
+                  className="w-5 h-5 mr-3" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24" 
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={item.icon} />
+                </svg>
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+          
+          <div className="p-4 border-t border-gray-200">
+            <div className="flex items-center mb-4 px-4">
+              <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">
+                {user?.nombre?.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase() || 'U'}
+              </div>
+              <div className="ml-3">
+                <p className="text-sm font-medium text-gray-700">
+                  {user?.nombre && user?.apellido 
+                    ? `${user.nombre} ${user.apellido}` 
+                    : user?.email || 'Usuario'}
+                </p>
+                <p className="text-xs text-gray-500">Administrador</p>
+              </div>
+            </div>
+            
+            <button
+              onClick={handleLogout}
+              className="w-full flex items-center justify-center px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors duration-200"
             >
               <svg 
-                className="w-5 h-5 mr-3" 
+                className="w-5 h-5 mr-2" 
                 fill="none" 
                 stroke="currentColor" 
                 viewBox="0 0 24 24" 
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={item.icon} />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
               </svg>
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-        
-        <div className="p-4 border-t border-gray-200">
-          <div className="flex items-center mb-4 px-4">
-            <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">
-              {user?.nombre?.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase() || 'U'}
-            </div>
-            <div className="ml-3">
-              <p className="text-sm font-medium text-gray-700">
-                {user?.nombre && user?.apellido 
-                  ? `${user.nombre} ${user.apellido}` 
-                  : user?.email || 'Usuario'}
-              </p>
-              <p className="text-xs text-gray-500">Administrador</p>
-            </div>
+              Cerrar Sesión
+            </button>
+          </div>
+        </aside>
+      </div>
+
+      {/* Mobile Sidebar - Animated */}
+      <AnimatePresence>
+        <motion.aside
+          initial={{ x: -280 }}
+          animate={{ x: isMobileMenuOpen ? 0 : -280 }}
+          transition={{ type: "spring", damping: 20 }}
+          className="md:hidden fixed w-64 h-full bg-white shadow-md z-40"
+        >
+          <div className="p-4 md:p-6 border-b border-gray-200">
+            <h1 className="text-xl md:text-2xl font-bold text-blue-600">EliteEstate</h1>
+            <p className="text-xs md:text-sm text-gray-500 mt-1">Gestión Inmobiliaria</p>
           </div>
           
-          <button
-            onClick={handleLogout}
-            className="w-full flex items-center justify-center px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors duration-200"
-          >
-            <svg 
-              className="w-5 h-5 mr-2" 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24" 
-              xmlns="http://www.w3.org/2000/svg"
+          <nav className="flex flex-col gap-1 p-4 flex-grow">
+            {navItems.map((item) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 ${
+                  location.pathname === item.path
+                    ? "bg-blue-50 text-blue-600 font-medium"
+                    : "text-gray-700 hover:bg-gray-100"
+                }`}
+              >
+                <svg 
+                  className="w-5 h-5 mr-3" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24" 
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={item.icon} />
+                </svg>
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+          
+          <div className="p-4 border-t border-gray-200">
+            <div className="flex items-center mb-4 px-4">
+              <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">
+                {user?.nombre?.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase() || 'U'}
+              </div>
+              <div className="ml-3">
+                <p className="text-sm font-medium text-gray-700">
+                  {user?.nombre && user?.apellido 
+                    ? `${user.nombre} ${user.apellido}` 
+                    : user?.email || 'Usuario'}
+                </p>
+                <p className="text-xs text-gray-500">Administrador</p>
+              </div>
+            </div>
+            
+            <button
+              onClick={handleLogout}
+              className="w-full flex items-center justify-center px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors duration-200"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-            </svg>
-            Cerrar Sesión
-          </button>
-        </div>
-      </aside>
+              <svg 
+                className="w-5 h-5 mr-2" 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24" 
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+              Cerrar Sesión
+            </button>
+          </div>
+        </motion.aside>
+      </AnimatePresence>
 
+      {/* Main Content */}
       <main className="flex-1 overflow-auto">
-        <div className="p-6">
+        <div className="p-4 md:p-6">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
