@@ -201,7 +201,7 @@ const Dashboard = () => {
           
           <div className="mt-3 md:mt-4">
             <Link 
-              to="/zonas" 
+              to="/catalogo" 
               className="text-blue-500 hover:text-blue-700 font-medium text-xs md:text-base inline-flex items-center"
             >
               Ver todas las zonas
