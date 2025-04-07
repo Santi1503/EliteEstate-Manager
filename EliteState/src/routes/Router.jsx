@@ -19,7 +19,7 @@ const Router = () => {
       <Route path="/register" element={<Register />} />
       <Route path="/recuperar-contrasena" element={<RecuperarContrasena />} />
       <Route
-        path="/dashboard"
+        path="/"
         element={
           <PrivateRoute>
             <Dashboard />
