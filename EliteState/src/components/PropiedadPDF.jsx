@@ -56,7 +56,7 @@ const PropiedadPDF = async (propiedad, extras) => {
         let imgY = margin;
         
         // Configuración de imágenes
-        const maxWidth = contentWidth - 50; // Ancho máximo para las imágenes
+        const maxWidth = contentWidth; // Ancho máximo para las imágenes
         const maxHeight = 90; // Alto máximo para las imágenes
         
         for (let i = 0; i < extras.length; i++) {
