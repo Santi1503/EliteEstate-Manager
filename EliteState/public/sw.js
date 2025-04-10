@@ -43,9 +43,9 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   // Ignorar peticiones no HTTP/HTTPS
-  if (!isValidUrl(event.request.url)) {
-    return;
-  }
+    if (!isValidUrl(event.request.url)) {
+      return;
+    }
 
   // Ignorar peticiones a la API de Firebase y otros servicios externos
   if (event.request.url.includes('firebase') || 

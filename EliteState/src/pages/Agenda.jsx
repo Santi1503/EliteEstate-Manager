@@ -464,7 +464,7 @@ const Agenda = () => {
             eventClick={handleEventClick}
             nowIndicator={true}
             locale="es"
-            slotMinTime="00:00:00"
+            slotMinTime="05:30:00"
             slotMaxTime="24:00:00"
             allDaySlot={true}
             height="auto"
