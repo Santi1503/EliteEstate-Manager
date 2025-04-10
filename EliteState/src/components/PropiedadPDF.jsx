@@ -5,10 +5,10 @@ const PropiedadPDF = async (propiedad, extras) => {
     const doc = new jsPDF();
     
     // Configuración de márgenes
-    const margin = 10; // Margen general del documento
+    const margin = 20; // Margen general del documento
     const pageWidth = 210;
     const pageHeight = 297;
-    const contentWidth = pageWidth - (margin);
+    const contentWidth = pageWidth - (margin * 2);
     
     // Configurar el color de texto
     doc.setTextColor(50, 50, 50);
@@ -51,12 +51,12 @@ const PropiedadPDF = async (propiedad, extras) => {
         
         // Título de la sección de imágenes
         doc.setFontSize(16);
-        doc.text("Imágenes:", margin, margin);
+        doc.text("Imágenes aaskfjhaskjh:", margin, margin);
         
         let imgY = margin;
         
         // Configuración de imágenes
-        const maxWidth = contentWidth; // Ancho máximo para las imágenes
+        const maxWidth = contentWidth - 50; // Ancho máximo para las imágenes
         const maxHeight = 90; // Alto máximo para las imágenes
         
         for (let i = 0; i < extras.length; i++) {
