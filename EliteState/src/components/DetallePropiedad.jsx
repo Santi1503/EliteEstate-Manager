@@ -4,6 +4,8 @@ import Layout from "../components/Layout";
 import { doc, getDoc, collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase/config";
 import { updatePropiedad, getPropiedadesPorZona } from "../firebase/zonasService";
+import PropiedadPDF from "./PropiedadPDF";
+import heic2any from 'heic2any';
 
 const DetallePropiedad = () => {
   const { zonaId, propiedadId } = useParams();
@@ -13,7 +15,9 @@ const DetallePropiedad = () => {
   const [editedPropiedad, setEditedPropiedad] = useState(null);
   const [search, setSearch] = useState("");
   const [propiedades, setPropiedades] = useState([]);
-  const [showSearchResults, setShowSearchResults] = useState(false);
+  const [showPDFModal, setShowPDFModal] = useState(false);
+  const [extraImages, setExtraImages] = useState([]);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   useEffect(() => {
     const fetchPropiedad = async () => {
@@ -44,22 +48,6 @@ const DetallePropiedad = () => {
     });
   };
 
-  const handleSearch = (e) => {
-    setSearch(e.target.value);
-    setShowSearchResults(true);
-  };
-
-  const filteredPropiedades = propiedades.filter((propiedad) => {
-    const searchTerm = search.toLowerCase();
-    return (
-      propiedad.ubicacion.toLowerCase().includes(searchTerm) ||
-      propiedad.descripcion.toLowerCase().includes(searchTerm) ||
-      propiedad.tipo.toLowerCase().includes(searchTerm) ||
-      propiedad.estado.toLowerCase().includes(searchTerm) ||
-      propiedad.propietario.toLowerCase().includes(searchTerm)
-    );
-  });
-
   const handleSave = async () => {
     try {
       await updatePropiedad(zonaId, propiedadId, editedPropiedad);
@@ -75,10 +63,66 @@ const DetallePropiedad = () => {
     setIsEditing(false);
   };
 
-  const handleSelectPropiedad = (id) => {
-    navigate(`/zona/${zonaId}/propiedad/${id}`);
-    setShowSearchResults(false);
-    setSearch("");
+  const convertHeicToJpeg = async (file) => {
+    try {
+      // Verificar si es un archivo HEIC
+      if (file.type === 'image/heic' || file.type === 'image/heif' || 
+          file.name.toLowerCase().endsWith('.heic') || file.name.toLowerCase().endsWith('.heif')) {
+        // Convertir HEIC a JPEG
+        const blob = await heic2any({
+          blob: file,
+          toType: "image/jpeg",
+          quality: 0.8
+        });
+        
+        // Crear un nuevo archivo con el mismo nombre pero extensión .jpg
+        const fileName = file.name.replace(/\.(heic|heif)$/i, '.jpg');
+        return new File([blob], fileName, { type: 'image/jpeg' });
+      }
+      return file; // Si no es HEIC, devolver el archivo original
+    } catch (error) {
+      console.error("Error al convertir HEIC a JPEG:", error);
+      return file; // En caso de error, devolver el archivo original
+    }
+  };
+
+  const handleImageUpload = async (e) => {
+    setIsProcessing(true);
+    try {
+      const files = Array.from(e.target.files);
+      
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg', 'image/heic', 'image/heif'];
+      
+      const isValid = files.every(file => 
+        allowedTypes.includes(file.type) || 
+        file.name.toLowerCase().endsWith('.heic') || 
+        file.name.toLowerCase().endsWith('.heif')
+      );
+      
+      if (!isValid) {
+        alert("Por favor, sube solo imágenes válidas (JPEG, PNG, WebP, JPG, HEIC, HEIF)");
+        return;
+      }
+      
+      // Convertir archivos HEIC a JPEG
+      const convertedFiles = await Promise.all(files.map(convertHeicToJpeg));
+      
+      const imagePromises = convertedFiles.map((file) => {
+        return new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.readAsDataURL(file);
+        });
+      });
+      
+      const base64Images = await Promise.all(imagePromises);
+      setExtraImages(base64Images);
+    } catch (error) {
+      console.error("Error al procesar las imágenes:", error);
+      alert("Hubo un error al procesar las imágenes. Por favor, intenta de nuevo.");
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   if (!propiedad) return <div>Cargando...</div>;
@@ -93,6 +137,15 @@ const DetallePropiedad = () => {
           >
             ← Atrás
           </button>
+
+          {!isEditing && (
+            <button
+            onClick={() => setShowPDFModal(true)}
+            className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
+           >
+             Descargar PDF
+           </button>
+          )}
           
           {!isEditing ? (
             <button
@@ -121,34 +174,6 @@ const DetallePropiedad = () => {
         
         <h1 className="text-2xl font-bold mb-4">Detalles de la Propiedad</h1>
 
-        {/* Barra de búsqueda para otras propiedades */}
-        <div className="mb-4 relative">
-          <input
-            type="text"
-            placeholder="Buscar otras propiedades en esta zona"
-            value={search}
-            onChange={handleSearch}
-            className="border p-2 rounded w-full"
-          />
-          {showSearchResults && search && (
-            <div className="absolute z-10 w-full bg-white border rounded shadow-lg max-h-60 overflow-y-auto">
-              {filteredPropiedades.length > 0 ? (
-                filteredPropiedades.map((prop) => (
-                  <div 
-                    key={prop.id} 
-                    className="p-2 hover:bg-gray-100 cursor-pointer border-b"
-                    onClick={() => handleSelectPropiedad(prop.id)}
-                  >
-                    <p className="font-medium">{prop.ubicacion}</p>
-                    <p className="text-sm text-gray-600">{prop.tipo} - {prop.estado}</p>
-                  </div>
-                ))
-              ) : (
-                <div className="p-2 text-gray-500">No se encontraron propiedades</div>
-              )}
-            </div>
-          )}
-        </div>
 
         <div className="bg-white rounded shadow p-4 space-y-4">
           {propiedad.imageUrl && (
@@ -301,6 +326,66 @@ const DetallePropiedad = () => {
           )}
         </div>
       </div>
+
+      {showPDFModal && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="bg-white rounded p-6 w-full max-w-md shadow-lg">
+      <h2 className="text-lg font-bold mb-4">Subir imágenes</h2>
+
+      <input
+        type="file"
+        multiple
+        accept="image/png image/jpeg image/jpg image/webp image/heic image/heif"
+        onChange={handleImageUpload}
+        className="mb-4 bg-gray-200 p-2 rounded-xl border border-gray-300"
+        disabled={isProcessing}
+      />
+
+      {isProcessing && (
+        <div className="text-center mb-4">
+          <div className="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-purple-500"></div>
+          <p className="mt-2 text-sm text-gray-600">Procesando imágenes...</p>
+        </div>
+      )}
+
+      {extraImages.length > 0 && (
+        <div className="flex overflow-x-auto gap-4 mb-4 p-1">
+          {extraImages.map((img, idx) => (
+            <div key={idx} className="flex-shrink-0 w-60">
+              <img
+                src={img}
+                alt={`extra-${idx}`}
+                className="w-full aspect-video object-contain bg-gray-100 rounded"
+              />
+            </div>
+          ))}
+        </div>
+      )}
+
+      <div className="flex justify-end gap-2">
+        <button
+          onClick={() => {
+            setShowPDFModal(false)
+            setExtraImages([])
+          }}
+          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+        >
+          Cancelar
+        </button>
+        <button
+          onClick={() => {
+            PropiedadPDF(propiedad, extraImages);
+            setShowPDFModal(false);
+            setExtraImages([]);
+          }}
+          className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
+        >
+          Generar PDF
+        </button>
+      </div>
+    </div>
+  </div>
+)}
     </Layout>
   );
 };
