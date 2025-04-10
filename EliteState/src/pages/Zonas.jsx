@@ -133,14 +133,14 @@ const Zona = () => {
       {/* Botón para agregar propiedad */}
       <button
         onClick={() => setShowModal(true)} // Mostrar el modal
-        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 mb-4"
+        className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-600 mb-4"
       >
         Agregar propiedad
       </button>
 
       {/* Modal para agregar propiedad */}
       {showModal && (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+        <div className="fixed inset-0 bg-black/90 bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-6 rounded-lg w-96">
             <h3 className="text-xl font-bold mb-4">Agregar Propiedad</h3>
 
@@ -287,7 +287,7 @@ const Zona = () => {
 
               <button
                 type="submit"
-                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-600"
               >
                 Agregar Propiedad
               </button>

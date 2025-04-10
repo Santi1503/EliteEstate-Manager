@@ -133,7 +133,7 @@ const DetallePropiedad = () => {
         <div className="flex justify-between mb-4">
           <button
             onClick={() => navigate(`/zona/${zonaId}`)}
-            className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
+            className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 text-xs md:text-base"
           >
             ← Atrás
           </button>
@@ -141,7 +141,7 @@ const DetallePropiedad = () => {
           {!isEditing && (
             <button
             onClick={() => setShowPDFModal(true)}
-            className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
+            className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 text-xs md:text-base"
            >
              Descargar PDF
            </button>
@@ -150,7 +150,7 @@ const DetallePropiedad = () => {
           {!isEditing ? (
             <button
               onClick={() => setIsEditing(true)}
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-xs md:text-base"
             >
               Editar Propiedad
             </button>
@@ -328,7 +328,7 @@ const DetallePropiedad = () => {
       </div>
 
       {showPDFModal && (
-  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div className="fixed inset-0 bg-black/90 bg-opacity-50 flex items-center justify-center z-50">
     <div className="bg-white rounded p-6 w-full max-w-md shadow-lg">
       <h2 className="text-lg font-bold mb-4">Subir imágenes</h2>
 
@@ -337,7 +337,7 @@ const DetallePropiedad = () => {
         multiple
         accept="image/png image/jpeg image/jpg image/webp image/heic image/heif"
         onChange={handleImageUpload}
-        className="mb-4 bg-gray-200 p-2 rounded-xl border border-gray-300"
+        className="mb-4 bg-gray-200 p-2 rounded-xl border border-gray-300 w-2/3"
         disabled={isProcessing}
       />
 
