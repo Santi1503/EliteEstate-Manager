@@ -4,12 +4,6 @@ const urlsToCache = [
   '/index.html',
   '/manifest.json',
   '/logo.png',
-  '/assets/index.css',
-  '/assets/index.js',
-  '/assets/vendor.js',
-  '/assets/logo.png',
-  '/assets/icons/icon-192x192.png',
-  '/assets/icons/icon-512x512.png'
 ];
 
 // Función para verificar si una URL es válida para cachear
