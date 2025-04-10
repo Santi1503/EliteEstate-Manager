@@ -5,7 +5,7 @@ const PropiedadPDF = async (propiedad, extras) => {
     const doc = new jsPDF();
     
     // Configuración de márgenes
-    const margin = 20; // Margen general del documento
+    const margin = 10; // Margen general del documento
     const pageWidth = 210;
     const pageHeight = 297;
     const contentWidth = pageWidth - (margin);
