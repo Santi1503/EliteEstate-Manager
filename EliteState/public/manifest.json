@@ -1,21 +1,28 @@
 {
-  "name": "Elite Estate Manager",
-  "short_name": "Elite Estate",
-  "description": "Aplicación para la gestión de propiedades",
-  "start_url": ".",
+  "name": "EliteState Manager",
+  "short_name": "EliteState",
+  "description": "Gestión de propiedades inmobiliarias",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#000000",
+  "theme_color": "#ffffff",
   "icons": [
     {
-      "src": "logo.png",
+      "src": "/icon.png",
+      "sizes": "192x192",
       "type": "image/png",
-      "sizes": "512x512"
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ],
   "orientation": "portrait",
   "dir": "ltr",
-  "lang": "es-ES",
+  "lang": "es",
   "prefer_related_applications": false,
   "categories": ["business", "productivity"],
   "screenshots": [
