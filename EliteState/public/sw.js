@@ -1,4 +1,4 @@
-const CACHE_NAME = 'elitestate-v1';
+const CACHE_NAME = 'elitestate-v2';
 const urlsToCache = [
   '/',
   '/index.html',
