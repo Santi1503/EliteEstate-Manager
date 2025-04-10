@@ -8,7 +8,7 @@ const PropiedadPDF = async (propiedad, extras) => {
     const margin = 20; // Margen general del documento
     const pageWidth = 210;
     const pageHeight = 297;
-    const contentWidth = pageWidth - (margin * 2);
+    const contentWidth = pageWidth - (margin);
     
     // Configurar el color de texto
     doc.setTextColor(50, 50, 50);
@@ -57,7 +57,7 @@ const PropiedadPDF = async (propiedad, extras) => {
         
         // Configuración de imágenes
         const maxWidth = contentWidth; // Ancho máximo para las imágenes
-        const maxHeight = 120; // Alto máximo para las imágenes
+        const maxHeight = 90; // Alto máximo para las imágenes
         
         for (let i = 0; i < extras.length; i++) {
             try {
