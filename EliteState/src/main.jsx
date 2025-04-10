@@ -20,6 +20,7 @@ if ('serviceWorker' in navigator) {
           if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
             // Nueva versión disponible
             console.log('Nueva versión de la aplicación disponible!');
+            window.location.reload();
           }
         });
       });
