@@ -51,7 +51,7 @@ const PropiedadPDF = async (propiedad, extras) => {
         
         // Título de la sección de imágenes
         doc.setFontSize(16);
-        doc.text("Imágenes aaskfjhaskjh:", margin, margin);
+        doc.text("Imágenes:", margin, margin);
         
         let imgY = margin;
         
